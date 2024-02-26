@@ -1,27 +1,24 @@
-import random
-
+import gerar_lista
+import sys
 
 try:
     quant = int(input('Insira a quantidade: '))
+    val_min = int(input('Insira o valor mínimo: '))
+    val_max = int(input('Insira o valor máximo: '))
+
+    try:
+        lista = gerar_lista.gerar_lista(quant, val_min, val_max)
+
+        if not lista[0]:
+            print(lista[1])
+            sys.exit
+        else: 
+            print(lista[1])
+    except:
+        print('insira os valores corretamente')
 except:
-    print('Não é um inteiro!!')
-while True:
-    try:
-        val_min = int(input('Insira o valor mínimo: '))
-    except:
-        print('Insira um valor válido')
-
-    try:
-        val_max = int(input('Insira o valor máximo: '))
-    except:
-        print('Insira um valor válido!')
-        continue
-    if val_min < val_max:
-        break
-    else: 
-        print('O Valor mínimo não pode ser maior que o valor máximo!')
-
-
-def gerar_lista(x,y,z):
-    try:
-        
+    print('insira valores inteiros')
+try:
+    lista = gerar_lista.gerar_lista(quant, val_min, val_max)
+except:
+    print('insira os valores corretamente')

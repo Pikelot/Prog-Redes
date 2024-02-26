@@ -1,0 +1,6 @@
+try:
+            for i in range (tamanho_l + 1):
+                lista_gerada.append(random.randrange(valor_min,valor_max))
+    except:
+            lista_gerada = None
+    return True, lista_gerada
