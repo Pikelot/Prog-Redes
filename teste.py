@@ -1,6 +1,6 @@
-try:
-        with open(f'ola.txt', 'w') as arquivo:
-            arquivo.write('ola monark aqui')
-            True
-except:
-        False
+lista_gerada = []
+with open(f'arquivo_teste.txt', 'r') as arquivo:
+            for item in arquivo:
+                print(item)
+                lista_gerada.append(item)
+                print (lista_gerada)
