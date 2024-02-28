@@ -1,5 +1,6 @@
 import gerar_lista
 import sys
+import salvar_lista
 
 try:
     #variáveis
@@ -22,3 +23,11 @@ try:
         print('insira os valores corretamente')
 except:
     print('insira valores inteiros')
+
+#geração do arquivo e controle de erros
+try:
+    nome = input('Digite um nome para o seu arquivo: ')
+    salvar_lista.salvar_lista(lista[1],nome)
+    print('Seu arquivo foi salvo com sucesso')
+except:
+     print('erro')
