@@ -2,17 +2,15 @@
 def ler_arquivo(nome_arquivo):
     
     lista_gerada = []
-    
-    print(nome_arquivo)
 
     try:
         with open(f'{nome_arquivo}.txt', 'r') as arquivo:
-            print('chegamos até aqui')
             
             for item in arquivo:
                 lista_gerada.append(item)
+
             #termine este for para apagar o \n
-            for
+            lista_gerada = [item.replace('\n', '') for item in lista_gerada]
 
             return True, lista_gerada
     
