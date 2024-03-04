@@ -3,11 +3,6 @@
 #    try:
 #        if método_ordena == 'BUBBLE':
 
-
-
-
-
-
 def ordena_bubble(nome_lista):
     try:
         
