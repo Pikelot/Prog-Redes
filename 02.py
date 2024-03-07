@@ -8,4 +8,5 @@ except:
     print('Arquivo não existe, verifique se você digitou o nome correto.')
 
 
-print(ordena_lista.ordena_selection(lista_arquivo[1]))
+lista = (ordena_lista.ordena_quick(lista_arquivo[1]))
+print(lista[1])

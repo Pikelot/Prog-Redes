@@ -8,7 +8,7 @@ def gerar_lista(tamanho_l,valor_min,valor_max):
     if not isinstance(valor_max, int): return False, 'o valor máximo deve ser do tipo inteiro para ser valido'
     if valor_min > valor_max: return False, 'o valor mínimo não pode ser maior que o máximo'
 
-    lista_gerada = [random.randrange(valor_min,valor_max) for i in range(tamanho_l)]
+    lista_gerada = [random.randrange(valor_min,valor_max) for i in range(tamanho_l - 1)]
 
     return True, lista_gerada
 

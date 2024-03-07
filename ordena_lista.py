@@ -4,8 +4,7 @@
 #        if método_ordena == 'BUBBLE':
 
 def ordena_bubble(nome_lista):
-    try:
-        
+    try: 
         for passnum in range(len(nome_lista)-1,0,-1):
             for i in range(passnum):
                 if nome_lista[i]>nome_lista[i+1]:
@@ -17,8 +16,20 @@ def ordena_bubble(nome_lista):
         print('Arquivo não existe, ou o nome inserido estava incorreto')
         return False, None
 
-#def ordena_inserction(nome_lista):
-
+def ordena_inserction(nome_lista):
+    
+    try:
+        for i in range(1, len(nome_lista)):
+            chave = nome_lista[i]
+            j = i - 1
+            while j >= 0 and nome_lista[j] > chave:
+                nome_lista[j + 1] = nome_lista[j]
+                j = j - 1
+            nome_lista[j + 1] = chave
+        return True, nome_lista
+    except:
+        return False, None
+    
 def ordena_selection(nome_lista):
     try:
         n = len(nome_lista)
@@ -30,5 +41,28 @@ def ordena_selection(nome_lista):
             nome_lista[i], nome_lista[minimo_atual] = nome_lista[minimo_atual], nome_lista[i]
         return True, nome_lista
 
+    except:
+        return False, None
+
+def ordena_quick(nome_lista):
+    try:
+        menor = []
+        igual = []
+        maior = []
+        
+        if len(nome_lista) >1:
+            pivô = nome_lista[0]
+            for i in nome_lista:
+                
+                if i < pivô:
+                    menor.append(i)
+                
+                elif i == pivô:
+                    igual.append(i)
+                
+                else:
+                    maior.append(i)
+
+            return True, menor + igual + maior
     except:
         return False, None
