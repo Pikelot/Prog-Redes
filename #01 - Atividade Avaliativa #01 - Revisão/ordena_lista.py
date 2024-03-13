@@ -1,8 +1,3 @@
-
-#def ordena_lista(nome_lista,método_ordena):
-#    try:
-#        if método_ordena == 'BUBBLE':
-
 def ordena_bubble(nome_lista):
     try: 
         for passnum in range(len(nome_lista)-1,0,-1):
@@ -45,24 +40,17 @@ def ordena_selection(nome_lista):
         return False, None
 
 def ordena_quick(nome_lista):
-    try:
-        menor = []
-        igual = []
-        maior = []
+    try:    
+        if len(nome_lista) <= 1:
+            return True, nome_lista
         
-        if len(nome_lista) >1:
-            pivô = nome_lista[0]
-            for i in nome_lista:
-                
-                if i < pivô:
-                    menor.append(i)
-                
-                elif i == pivô:
-                    igual.append(i)
-                
-                else:
-                    maior.append(i)
-
-            return True, menor + igual + maior
+        else:
+            pivot = nome_lista[len(nome_lista)//2]
+            menor = [x for x in nome_lista if x < pivot]
+            iguais = [x for x in nome_lista if x == pivot]
+            maior = [x for x in nome_lista if x > pivot]
+            ordenado_menores = ordena_quick(menor)
+            ordenado_maiores = ordena_quick(maior)
+            return True, ordenado_menores[1] + iguais + ordenado_maiores[1]
     except:
-        return False, None
+            return False, None
