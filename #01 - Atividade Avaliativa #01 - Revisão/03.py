@@ -1,9 +1,17 @@
 
 from findnonce import *
 
-string = "Olá, mundo!"
 
-dataToHash = string.encode("utf-8")
-BitsToBeZero = 3
-
-findnonce(dataToHash, BitsToBeZero)
+print('|Texto a validar| Bits em Zero | Nonce | Tempo (em s)|')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       10       |               |               |')
+print('|Esse é fácil    |       15       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       10       |               |               |')
+print('|Esse é fácil    |       15       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')
+print('|Esse é fácil    |       8       |               |               |')

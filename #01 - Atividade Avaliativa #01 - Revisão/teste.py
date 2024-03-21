@@ -1,28 +1,24 @@
-def ordena_quick(nome_lista):
+import hashlib
+import time
 
-    if len(nome_lista) <= 1:
-            return nome_lista
-    else:
-            pivot = nome_lista[len(nome_lista)//2]
-            menor = [x for x in nome_lista if x < pivot]
-            iguais = [x for x in nome_lista if x == pivot]
-            maior = [x for x in nome_lista if x > pivot]
-            return True, ordena_quick(menor) + iguais + ordena_quick(maior)
+def findNonce(dataToHash, bitsToBeZero):
+    start_time = time.time() # Registra o tempo de início
+    nonce = 0
+    while True:
+        # Concatena o nonce ao conjunto de bytes
+        data = dataToHash + nonce.to_bytes((nonce.bit_length() + 7) // 8, 'big')
+        # Calcula o hash SHA256
+        hash_result = hashlib.sha256(data).hexdigest()
+        # Converte o hash em binário e verifica os bits iniciais
+        if hash_result.startswith('0' * bitsToBeZero):
+            end_time = time.time() # Registra o tempo de término
+            elapsed_time = end_time - start_time # Calcula o tempo decorrido
+            return nonce, elapsed_time
+        nonce += 1
 
-def quicksort(lista):
-    if len(lista) <= 1:
-        return True, lista
-    else:
-        pivot = lista[len(lista)//2]
-        menores = [x for x in lista if x < pivot]
-        iguais = [x for x in lista if x == pivot]
-        maiores = [x for x in lista if x > pivot]
-        sorted_menores = quicksort(menores)
-        sorted_maiores = quicksort(maiores)
-        return True, sorted_menores[1] + iguais + sorted_maiores[1]
-    
-
-
-lista = [1,4,5,1,2,3]
-
-print(quicksort(lista))
+# Exemplo de uso
+data = b"alguma coisa"
+bits_to_be_zero = 20
+nonce, time_taken = findNonce(data, bits_to_be_zero)
+print("Nonce encontrado:", nonce)
+print("Tempo decorrido (segundos):", time_taken)
