@@ -17,8 +17,8 @@ def findNonce(dataToHash, bitsToBeZero):
         nonce += 1
 
 # Exemplo de uso
-data = b"alguma coisa"
-bits_to_be_zero = 20
+data = b"Esse e facil"
+bits_to_be_zero = 8
 nonce, time_taken = findNonce(data, bits_to_be_zero)
 print("Nonce encontrado:", nonce)
 print("Tempo decorrido (segundos):", time_taken)
