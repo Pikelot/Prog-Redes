@@ -1,11 +1,12 @@
 
 import random
+from verificar import *
 
 lista = []
 rodada = 1
 
-
 #abrir o arquivo com as palavras
+
 try:
     with open(f'term.txt', 'r') as arquivo:
         for item in arquivo:
@@ -27,8 +28,6 @@ elif len(termo) == 7:
 elif len(termo) == 8:
     ajustamento = 110
 
-letras_corretas = []
-letras_incorretas = []
 while True:
     print(f'______|   BEM VINDO AO TERMO! |______'.center(164))
     print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164))
@@ -44,13 +43,13 @@ while True:
             
             if cont == len(termo):
                 if letra in letras_corretas:
-                    print(f'| {letra} ', end='|')
+                   print(f'| {letra} ', end='|')
                 else:
-                    print('|___ ', end='|')
-                    
-    print('|'.rjust(ajustamento))
+                    print('|___', end='|')
     try:
         escolha = input('Digite um termo: ')
+        resultado = está_na_lista(escolha,termo)
+        print(resultado)
     except:
         print('Numeros não são letras!!!') 
 
