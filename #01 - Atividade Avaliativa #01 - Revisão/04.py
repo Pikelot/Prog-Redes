@@ -3,7 +3,7 @@ import random
 from verificar import *
 
 lista = []
-rodada = 1
+rodada = 2
 
 #abrir o arquivo com as palavras
 
@@ -18,6 +18,7 @@ except:
 #escolha randômica da palavra
 #termo = random.choice(lista)
 termo = 'motos'
+
 #ajustamento para embelezamento da tabela
 if len(termo) == 5:
     ajustamento = 100
@@ -28,31 +29,38 @@ elif len(termo) == 7:
 elif len(termo) == 8:
     ajustamento = 110
 
+
+print(f'_______| BEM VINDO AO TERMO! |_______'.center(164))
+print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(187))
 while True:
-    print(f'______|   BEM VINDO AO TERMO! |______'.center(164))
-    print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164))
     for i in range(0, rodada):
-        cont = 0
-        for letra in termo:
-            if letra in letras_corretas:
-                print(f'| {letra} ', end='')
-                cont += 1
-            else:
-                print('|___', end='')
-                cont += 1
-            
-            if cont == len(termo):
-                if letra in letras_corretas:
-                   print(f'| {letra} ', end='|')
-                else:
-                    print('|___', end='|')
-    try:
+        
+        #print(f'|{"|_____|" * len(termo)}|'.rjust(ajustamento))
         escolha = input('Digite um termo: ')
         resultado = está_na_lista(escolha,termo)
-        print(resultado)
-    except:
-        print('Numeros não são letras!!!') 
 
-print(letras_corretas)
-print(letras_incorretas)
-print(termo)
+        letras_corretas = resultado[0]
+        letras_erradas = resultado[1]
+
+        cont = 0
+        
+        for a in range(0, len(termo)-1):
+            print(letras_corretas)
+            letra, numero = letras_corretas[a]
+            
+            if a == numero:
+                print(f'| {letra} ', end='|')
+            else:
+                print(f'|_____', end='|',)
+        print('\n')
+
+    if resultado == 0:
+        print('Parabéns!!, você acertou, a palavra era:', termo)
+        break
+
+    #except:
+        #print('Numeros não são letras!!!') 
+
+#print(letras_corretas)
+#print(letras_incorretas)
+#print(termo)

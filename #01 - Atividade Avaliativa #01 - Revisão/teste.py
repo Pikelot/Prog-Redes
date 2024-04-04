@@ -8,10 +8,10 @@ except FileNotFoundError:
     print('O arquivo term.txt não existe ou foi apagado.')
 
 # Escolha randômica da palavra
-if lista:
-    termo = random.choice(lista)
-else:
-    termo = 'motos'
+#if lista:
+#    termo = random.choice(lista)
+#else:
+termo = 'motos'
 
 # Ajustamento para embelezamento da tabela
 ajustamento = 100 + (len(termo) - 5) * 4
