@@ -16,8 +16,8 @@ except:
     print('arquivo.txt não existe ou foi apagado')
 
 #escolha randômica da palavra
-#termo = random.choice(lista)
-termo = 'motos'
+termo = random.choice(lista)
+#termo = 'motos'
 
 #ajustamento para embelezamento da tabela
 if len(termo) == 5:
@@ -31,32 +31,46 @@ elif len(termo) == 8:
 
 
 print(f'_______| BEM VINDO AO TERMO! |_______'.center(164))
-print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(187))
+print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164), end='')
 while True:
-    for i in range(0, rodada):
+        
+        p = ''
+        cores = [
+        '\033[91m',  # Vermelho
+        '\033[93m',  # Amarelo
+        '\033[92m',  # Verde
+        ]
         
         #print(f'|{"|_____|" * len(termo)}|'.rjust(ajustamento))
-        escolha = input('Digite um termo: ')
-        resultado = está_na_lista(escolha,termo)
-
-        letras_corretas = resultado[0]
-        letras_erradas = resultado[1]
-
-        cont = 0
-        
-        for a in range(0, len(termo)-1):
-            print(letras_corretas)
-            letra, numero = letras_corretas[a]
-            
-            if a == numero:
-                print(f'| {letra} ', end='|')
+        while True:
+            escolha = input(f'Digite um termo: ') 
+            end=''
+            if len(escolha) == len(termo):
+                break
             else:
-                print(f'|_____', end='|',)
-        print('\n')
+                print('Tentativa incorreta, busque palavras com', len(termo), 'letras')
+        
+        resultado = está_na_lista(escolha,termo)
+        letras_corretas = resultado
 
-    if resultado == 0:
-        print('Parabéns!!, você acertou, a palavra era:', termo)
-        break
+        if resultado == 0:
+            print('Parabéns!!, você acertou, a palavra era:', termo)
+            break
+        
+        #print(resultado)
+
+        for a in range(0, len(termo)):
+
+            letra, numero, info = letras_corretas[a]
+            if a == numero and info == 'c':
+                p += f'|{cores[2]}__{letra.upper()}__\033[0m|'
+            elif a == numero and info == 'ce':
+                p += f'|{cores[1]}__{letra.upper()}__\033[0m|'
+            elif a == numero and info == 'e':
+                p += f'|{cores[0]}__{letra.upper()}__\033[0m|'
+            else:
+                p += f'|_____|\033[0m|'
+        print(p.center(208), end=' ')
 
     #except:
         #print('Numeros não são letras!!!') 

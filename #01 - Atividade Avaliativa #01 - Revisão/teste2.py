@@ -1,41 +1,28 @@
-from verificar import *
+import string
 
-def preencher_tabela(tabela, resultado):
-    for tupla in resultado:
-        for letra, posicao in tupla:
-            tabela[posicao] = letra
-    return tabela
+def obter_cor_arco_iris(letra):
+    cores = [
+        '\033[91m',  # Vermelho
+        '\033[93m',  # Amarelo
+        '\033[92m',  # Verde
+        '\033[94m',  # Azul
+        '\033[95m',  # Roxo
+        '\033[96m',  # Ciano
+    ]
+    indice_letra = string.ascii_lowercase.index(letra.lower())
+    cor_index = indice_letra % len(cores)
+    return cores[cor_index]
 
-def print_tabela(tabela, termo, ajustamento):
-    for linha in tabela:
-        print(f'|{"|".join(linha)}|'.rjust(ajustamento))
-    print(f'|{"|_____|" * len(termo)}|'.rjust(ajustamento))
+def construir_grid(letras_corretas, numero):
+    grid = ''
+    for letra, info in letras_corretas.items():
+        if letra == numero and info != 'e':
+            grid += f'|{obter_cor_arco_iris(letra)}__{letra.upper()}__\033[0m|'
+        else:
+            grid += '|_____|\033[0m|'
+    return grid
 
-termo = 'motos'
-
-print(f'______|   BEM VINDO AO TERMO! |______'.center(164))
-print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164))
-
-# Crie a tabela vazia
-tabela = [[' ' for _ in range(len(termo))] for _ in range(3)]
-
-if len(termo) == 5:
-    ajustamento = 100
-elif len(termo) == 6:
-    ajustamento = 104
-elif len(termo) == 7:
-    ajustamento = 107
-elif len(termo) == 8:
-    ajustamento = 110
-
-
-while True:
-    print_tabela(tabela, termo, ajustamento)
-    escolha = input('Digite um termo: ')
-    resultado = está_na_lista(escolha, termo)
-    tabela = preencher_tabela(tabela, resultado)
-    print_tabela(tabela, termo, ajustamento)
-        
-    if resultado == 0:
-        print('Parabéns!!, você acertou, a palavra era:', termo)
-        break
+# Exemplo de uso:
+letras_corretas = {'a': 'info_a', 'b': 'info_b', 'c': 'info_c'}  # Substitua isso com seus dados reais
+numero = 'b'  # Substitua isso com o número atual
+print(construir_grid(letras_corretas, numero))

@@ -12,8 +12,8 @@ def está_na_lista(letra,termo):
     for item in termo:
         termo_lista.append(item)
     
-    lista_corretas = []
-    lista_corretas_erradas = []
+    #lista de verificação e lista final
+    lista_final = []
     lista_ver = []
 
     
@@ -22,28 +22,27 @@ def está_na_lista(letra,termo):
         if letra_lista[i] == termo_lista[i]:
             
             lista_ver.append(letra_lista[i])
-            lista_corretas.append([letra_lista[i], i])
+            lista_final.append([letra_lista[i], i, 'c'])
 
         elif letra_lista[i] in termo_lista:
-            lista_corretas_erradas.append([letra_lista[i], i])
+            lista_final.append([letra_lista[i], i, 'ce'])
+        
+        else:
+            lista_final.append([letra_lista[i], i, 'e'])
     
     #verifica se todas as letras estão corretas e nas posições corretas
     if lista_ver == termo_lista:
         return 0
     
     else:
-        return lista_corretas, lista_corretas_erradas
+        return lista_final
 
-termo = 'motos'
-letra = 'motso'
+#termo = 'motos'
+#letra = 'motso'
 
-resulto = está_na_lista(letra,termo)
-letras_corretas = resulto[0]
-letras_erradas = resulto[1]
-print(letras_corretas[0])
-
-for a in range(0, len(termo) + 1):
-    if a in letras_corretas[0]:
-        print(f'| {letras_corretas[0]} ', end='|')
-    else:
-        break
+#resulto = está_na_lista(letra,termo)
+#print(resulto)
+#letra, numero, info = resulto[0]
+#for a in range(0, 5):
+#    letra, numero, info = resulto[a]
+#    print(letra)
