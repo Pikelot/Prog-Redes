@@ -19,19 +19,11 @@ except:
 termo = random.choice(lista)
 #termo = 'motos'
 
-#ajustamento para embelezamento da tabela
-if len(termo) == 5:
-    ajustamento = 100
-elif len(termo) == 6:
-    ajustamento = 104
-elif len(termo) == 7:
-    ajustamento = 107
-elif len(termo) == 8:
-    ajustamento = 110
-
-
 print(f'_______| BEM VINDO AO TERMO! |_______'.center(164))
 print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164), end='')
+
+rodada = 0
+
 while True:
         
         p = ''
@@ -41,20 +33,36 @@ while True:
         '\033[92m',  # Verde
         ]
         
-        #print(f'|{"|_____|" * len(termo)}|'.rjust(ajustamento))
+        contador = 0
+
         while True:
             escolha = input(f'Digite um termo: ') 
             end=''
             if len(escolha) == len(termo):
                 break
             else:
-                print('Tentativa incorreta, busque palavras com', len(termo), 'letras')
+                contador += 1
+                print(f'Tentativa incorreta, busque palavras com, {len(termo)}, letras'.rjust(215), end=''.ljust(174))
+                if contador == 2:
+                    contador = False
+                    break
+        
+        if contador == False:
+            print('Digite o número de letras certo da próxima vez!!')
+            break
         
         resultado = está_na_lista(escolha,termo)
         letras_corretas = resultado
 
+        #verificando se jogador acertou
         if resultado == 0:
+            print(end=''.ljust(164))
             print('Parabéns!!, você acertou, a palavra era:', termo)
+            break
+
+        if rodada > 6:
+            print(end=''.ljust(164))
+            print('Droga, você não conseguiu acertar, a palavra era:', termo)
             break
         
         #print(resultado)
@@ -70,7 +78,21 @@ while True:
                 p += f'|{cores[0]}__{letra.upper()}__\033[0m|'
             else:
                 p += f'|_____|\033[0m|'
-        print(p.center(208), end=' ')
+
+        if len(termo) == 5:
+            print(p.center(208), end=' ')
+        if len(termo) == 6:
+            print(p.center(216), end='  ')
+        if len(termo) == 7:
+            print(p.center(226), end=' ')
+        if len(termo) == 8:
+            print(p.center(236), end='')
+        
+        rodada += 1
+
+        print('Estamos na rodada: ', rodada, end='\n')
+        
+        print(end=''.ljust(164))
 
     #except:
         #print('Numeros não são letras!!!') 
