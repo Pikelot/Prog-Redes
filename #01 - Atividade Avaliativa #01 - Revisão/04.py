@@ -17,7 +17,7 @@ except:
 
 #escolha randômica da palavra
 termo = random.choice(lista)
-#termo = 'motos'
+termo = 'motos'
 
 print(f'_______| BEM VINDO AO TERMO! |_______'.center(164))
 print(f'|A palavra selecionada tem {len(termo)} letras!|'.center(164), end='')
@@ -33,21 +33,19 @@ while True:
         '\033[92m',  # Verde
         ]
         
-        contador = 0
+        contador = 1
 
         while True:
-            escolha = input(f'Digite um termo: ') 
-            end=''
+            escolha = input(f'Digite um termo: ')
+
             if len(escolha) == len(termo):
                 break
             else:
-                contador += 1
-                print(f'Tentativa incorreta, busque palavras com, {len(termo)}, letras'.rjust(215), end=''.ljust(174))
-                if contador == 2:
-                    contador = False
-                    break
+                cont = False
+                break
         
         if contador == False:
+            print( end=''.rjust(164))
             print('Digite o número de letras certo da próxima vez!!')
             break
         
