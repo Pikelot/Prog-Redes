@@ -8,7 +8,7 @@ rodada = 2
 #abrir o arquivo com as palavras
 
 try:
-    with open(f'term.txt', 'r') as arquivo:
+    with open('#01 - Atividade Avaliativa #01 - Revisão/term.txt', 'r') as arquivo:
         for item in arquivo:
             lista.append(item)
     lista = [item.strip() for item in lista]
