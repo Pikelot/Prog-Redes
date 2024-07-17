@@ -3,19 +3,9 @@ import socket, sys
 def dividir(arquivo):
     portas = []
     for line in arquivo:
-        # Dividindo a linha no primeiro '/'
-        parts = line.split('/', 1)
-        if len(parts) == 2:
-            porta = parts[0]
-            resto = parts[1]
-            # Dividindo o restante no primeiro '/'
-            subparts = resto.split('/', 1)
-            if len(subparts) == 2:
-                tipo = subparts[0]
-                desc = subparts[1]
         
-        porta_tipo_desc = [porta,tipo,desc]
-        portas.append(porta_tipo_desc)
+        # Dividindo a linha no primeiro '/'
+        portas.append(line.split('/'))
 
     return(portas)
 
