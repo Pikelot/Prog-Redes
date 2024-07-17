@@ -17,7 +17,7 @@ for port in lstPorts:
 
 
 
-#A: Armazena o ip externo
+#A: Armazena o ip externo com o nome de domínio
 
 #B: family=socket.AF_INET indica que o ip é ipv4, e o type= indica o tipo de socket, neste caso, TCP
 

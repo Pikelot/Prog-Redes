@@ -11,15 +11,20 @@ def dividir(file):
             # Dividindo o restante no primeiro '/'
             subparts = resto.split('/', 1)
             if len(subparts) == 2:
-                type = subparts[0]
+                tipo = subparts[0]
                 desc = subparts[1]
         
-        porta_tipo_desc = [porta,type,desc]
+        porta_tipo_desc = [porta,tipo,desc]
         portas.append(porta_tipo_desc)
 
     return(portas)
 
-strHost = 'www.ifrn.edu.br'
+print("Não")
+strHost = input('Digite a url: ')
+if 'https://' in strHost:
+    strHost.replace("https://", "")
+print(strHost)
+#strHost = 'www.ifrn.edu.br'
 ipHost  = socket.gethostbyname(strHost)
  
 
@@ -49,7 +54,7 @@ for porta in pasta:
         except:
             statusu = "fechada"
 
-        print(f'Porta {porta[0]}: Protocolo TCP,UDP: {porta[2]} / Status TCP: {statust} StatuS UDP: {statusu}')
+        print(f'Porta {porta[0]}: Protocolo TCP,UDP: {porta[2]} / Status: TCP: {statust} UDP: {statusu}')
 
         #sock.close
     
