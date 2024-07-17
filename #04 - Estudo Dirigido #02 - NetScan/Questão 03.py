@@ -19,22 +19,21 @@ def dividir(file):
 
     return(portas)
 
-print("Não")
+print("Exemplo de url: www.ifrn.edu.br")
+
 strHost = input('Digite a url: ')
-if 'https://' in strHost:
-    strHost.replace("https://", "")
-print(strHost)
+
 #strHost = 'www.ifrn.edu.br'
-ipHost  = socket.gethostbyname(strHost)
- 
-
-
+try:
+    ipHost  = socket.gethostbyname(strHost)
+except:
+    print('Não use http:// ou https://')
 #Abrindo o arquivo e executando a função de dividir as portas em Numero, Tipo e Descrição
 
 with open('#04 - Estudo Dirigido #02 - NetScan/portas.txt','r') as arquivo:
     pasta = dividir(arquivo)
 
-#print(ipHost)
+#testando e printando os resultados para cada porta
 
 for porta in pasta:
     
