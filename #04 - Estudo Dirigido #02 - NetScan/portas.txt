@@ -1,0 +1,10 @@
+80/TCP/HTTP Alternate (HyperText Transfer Protocol - Protocolo de transferência de HiperTexto)
+53/TCP,UDP/	DNS (Domain Name System - Sistema de nome de domínio)
+20/TCP/	FTP (File Transfer Protocol - Protocolo de transferência de arquivo) - Porta de dados do FTP
+22/TCP,UDP/	SSH (Secure Shell - Shell seguro) - Usada para logins seguros, transferência de arquivos e redirecionamento de porta
+69/UDP/	TFTP(Trivial File Transfer Protocol) (Protocolo de transferência de arquivo trivial)
+513/UDP/	Who
+110/TCP/	POP3 (Post Office Protocol version 3): Protocolo de Correio Eletrônico, versão 3 - usada para recebimento de e-mail
+25/TCP,UDP/	SMTP (Simple Mail Transfer Protocol - Protocolo simples de envio de e-mail) - usada para roteamento de e-mail entre servidores (Atualmente é utilizada a porta 587,conforme Comitê Gestor da Internet no Brasil CGI.br
+23/TCP,UDP/	Telnet protocol - Comunicação de texto sem encriptação
+67/UDP/	BOOTP (BootStrap Protocol) server; também utilizada por DHCP (Protocolo de configuração dinâmica do Host)
