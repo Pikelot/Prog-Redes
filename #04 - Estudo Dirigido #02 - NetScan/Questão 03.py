@@ -67,7 +67,7 @@ for porta in pasta:
         except:
             statust = "fechada"
         
-        print(f'Porta {porta[0]}: Protocolo TCP: {porta[2]} / Status TCP: {statust}')
+        print(f'Porta {porta[0]}: Protocolo TCP: {porta[2]} / Status: TCP: {statust}')
 
     else:
 
@@ -79,4 +79,4 @@ for porta in pasta:
         except:
             statust = "fechada"
         
-        print(f'Porta {porta[0]}: Protocolo TCP,UDP: {porta[2]} / StatuS UDP: {statust}')
+        print(f'Porta {porta[0]}: Protocolo UDP: {porta[2]} / Status: UDP: {statust}')
