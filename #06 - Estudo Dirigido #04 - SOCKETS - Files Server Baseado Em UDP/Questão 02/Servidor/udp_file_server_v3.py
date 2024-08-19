@@ -1,4 +1,4 @@
-import socket, time
+import socket, time, os
 
 SERVER = '127.0.0.1'
 PORT   = 31435
@@ -16,8 +16,11 @@ while True:
     msg, addr = sock.recvfrom(4096)
     strNomeArq = msg.decode('utf-8')
     
+    file_size = os.path.getsize(f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Questão 02/Servidor/Arquivos/{strNomeArq}')
+    print(f'#O tamanho do arquivo é: {file_size} bytes.')
+
     try:
-        fd = open (strNomeArq, 'rb')
+        fd = open (f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Questão 02/Servidor/Arquivos/{strNomeArq}', 'rb')
     except:
         break
 

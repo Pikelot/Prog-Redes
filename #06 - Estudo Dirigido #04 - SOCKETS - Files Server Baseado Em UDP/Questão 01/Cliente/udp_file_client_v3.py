@@ -16,7 +16,7 @@ try:
         strNomeArq = input('Nome do arquivo a fazer download: ')
         sock.sendto(strNomeArq.encode('utf-8'), (SERVER, PORT))
 
-        fd = open (f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Cliente/{strNomeArq}', 'wb')
+        fd = open (f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Questão 01/Cliente/{strNomeArq}', 'wb')
         
         tam = 0
         data, addr = sock.recvfrom(4096)
@@ -36,5 +36,5 @@ sock.close()
 
 #Verificando se o arquivo está vazio, se sim, houve erro ou o arquivo não consta no servidor.
 
-if os.path.getsize(f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Cliente/{strNomeArq}') == 0:
+if os.path.getsize(f'#06 - Estudo Dirigido #04 - SOCKETS - Files Server Baseado Em UDP/Questão 01/Cliente/{strNomeArq}') == 0:
     print(f'Arquivo: |{strNomeArq}| não consta no servidor')

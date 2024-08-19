@@ -1,0 +1,3 @@
+#As vantagens são o controle do tempo do servidor impedindo que o servidor fique em um looping esperando o pedido, a mesma coisa para o cleinte.
+
+#Já as desvantagens é a possibilidade de que o servidor possa parar de receber os arquivos antes do fim do timeout, por estar demorando demais.
