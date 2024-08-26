@@ -11,12 +11,6 @@ incompletos = 0
 # Dicionário para armazenar o tráfego entre pares de IPs
 trafego_ips = {}
 
-# Conjunto para armazenar os IPs que interagiram com a interface capturada
-ips_interagidos = set()
-
-# IP da interface capturada (substitua pelo IP da interface se conhecido)
-ip_interface = None
-
 # Abrindo o arquivo cap
 arquivo = open(f'#03 - Atividade Avaliativa #02 - TCP-DUMP/cap{n}.dump', 'rb')
 
@@ -63,16 +57,6 @@ while Pacote_cabeça != b'':
         ip_src_str = '.'.join(map(str, ip_src))
         ip_dst_str = '.'.join(map(str, ip_dst))
 
-        # Definir o IP da interface capturada na primeira interação
-        if ip_interface is None:
-            ip_interface = ip_src_str
-
-        # Verificar se o IP de origem ou destino corresponde ao IP da interface capturada
-        if ip_src_str == ip_interface:
-            ips_interagidos.add(ip_dst_str)
-        elif ip_dst_str == ip_interface:
-            ips_interagidos.add(ip_src_str)
-
         # Criar uma chave para o par de IPs, ordenando-os para evitar duplicidade
         if ip_src_str < ip_dst_str:
             chave = (ip_src_str, ip_dst_str)
@@ -110,8 +94,6 @@ print(f"""
 |
 |F) = O par de IPs com maior tráfego entre eles foi: {par_ips_maior_trafego}
 |     com um total de {maior_trafego} bytes transferidos.
-|
-|G) = O IP {ip_interface} interagiu com {len(ips_interagidos)} outros IPs.
 ------------------------------------------------
 """)
 
