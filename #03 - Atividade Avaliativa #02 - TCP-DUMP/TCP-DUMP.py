@@ -7,23 +7,19 @@ maior_pacote = 0
 numero_pacotes = 0
 tamanho_total = 0
 incompletos = 0
-
-# Dicionário para armazenar o tráfego entre pares de IPs
 trafego_ips = {}
-
-# Conjunto para armazenar os IPs que interagiram com a interface capturada
 ips_interagidos = set()
-
-# IP da interface capturada (substitua pelo IP da interface se conhecido)
 ip_interface = None
 
 # Abrindo o arquivo cap
+try:
+    escolha = input('Qual arquivo você quer abrir? 1/2?')
+except:
+    print(SystemError)
 arquivo = open(f'#03 - Atividade Avaliativa #02 - TCP-DUMP/cap{n}.dump', 'rb')
 
-# Pular o cabeçalho global do arquivo .cap
+#Atribuição dos cabeçalhos
 arquivo.seek(24)
-
-# Ler o primeiro cabeçalho do pacote
 Pacote_cabeça = arquivo.read(16)
 
 while Pacote_cabeça != b'':
@@ -70,6 +66,7 @@ while Pacote_cabeça != b'':
         # Verificar se o IP de origem ou destino corresponde ao IP da interface capturada
         if ip_src_str == ip_interface:
             ips_interagidos.add(ip_dst_str)
+            
         elif ip_dst_str == ip_interface:
             ips_interagidos.add(ip_src_str)
 
