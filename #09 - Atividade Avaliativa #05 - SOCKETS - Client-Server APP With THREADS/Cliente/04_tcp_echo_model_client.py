@@ -1,0 +1,69 @@
+import socket, time, os, sys, threading
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from funcoes_socket import *
+from socket_constants import *
+
+# Criando o socket TDP
+tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Ligando o socket a porta
+
+try:
+    tcp_socket.settimeout(10)
+    tcp_socket.connect((HOST_SERVER, SOCKET_PORT))
+
+except Exception as e:
+    print(f'Erro ao conectar ao servidor: {e}')
+    exit(1)
+
+start = True
+
+while True:
+
+    if start == True:
+        print("""
+Digite /help para ver os comandos disponíveis
+""")
+    
+    mensagem = input('Digite a mensagem: ')
+    mensagem = '/cotation <02-04-2004> <02-04-2004>'
+    
+    if mensagem:
+        # Convertendo a mensagem digitada de string para bytes
+        mensagem = mensagem.encode(CODE_PAGE)
+        # Enviando a mensagem ao servidor      
+        tcp_socket.send(mensagem)
+
+        # Recebendo echo do servidor
+        tcp_socket.settimeout(50)
+
+        dado_recebido     = tcp_socket.recv(BUFFER_SIZE)
+        mensagem_recebida = dado_recebido.decode(CODE_PAGE)
+
+        if mensagem_recebida == 'carregando...':
+            print(mensagem_recebida)
+            tcp_socket.settimeout(550)
+
+            dado_recebido = tcp_socket.recv(BUFFER_SIZE)
+            mensagem_recebida = dado_recebido.decode(CODE_PAGE)
+
+        if mensagem_recebida == 'Devolvendo...0':
+            print('Conexão encerrada pelo servidor')
+            break
+        
+        if mensagem_recebida.startswith('Retornando'):
+            print(mensagem_recebida)
+            nome = tcp_socket.recv(BUFFER_SIZE)
+            while True:
+                dado_recebido = tcp_socket.recv(BUFFER_SIZE)
+                open(nome.decode(CODE_PAGE), 'wb').write(dado_recebido)
+                if len(dado_recebido) < BUFFER_SIZE:
+                    break
+            continue
+
+        print(f'Echo Recebido: {mensagem_recebida}')
+        start = False
+
+# Fechando o socket
+tcp_socket.close()
