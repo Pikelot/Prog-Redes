@@ -1,5 +1,5 @@
 import datetime, subprocess, re
-import requests
+import requests, os
 import json
 
 def ajuda():
@@ -12,7 +12,8 @@ def ajuda():
 | /route - para ver a rota do servidor, use o comando /route <url>
 | /vignere - para criptografar uma mensagem com o método de vignere, use o comando /vignere <mensagem> <chave>
 | /cotation - para ver a cotação do dólar, use o comando /cotation <data_inicial> <data_final> 
-|   obs: A data tem que ser no formato dd-mm-yyyy
+|   obs: A data tem que ser no formato mm-dd-yyyy
+| /clientes - para mostrar os clientes atualmente conectados
 ---------------------"""
     return mensagem
 
@@ -61,3 +62,20 @@ def cotacao(data_inicial, data_final):
         else:
             return f"Erro na requisição: {str(e)}"
 
+def cliente_c(parametros):
+    #proc é um inteiro #0 ou #1, #0 é o processo que é enviado quando um cliente se desconectar
+    caminho = f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/'
+
+    if parametros[2] == 0:
+        with open(f'{caminho}cliente_list.txt', 'a') as arquivo:
+            arquivo.write(f'Cliente: {parametros[1]}\n')
+    
+    else:
+        with open(f'{caminho}cliente_list.txt', 'r') as arquivo:
+            arq = arquivo.readlines()
+        
+        arq_filtrado = [linha for linha in arq if linha.strip() != f'Cliente: {parametros[1]}']
+
+        with open(f'{caminho}cliente_list.txt', 'w') as arquivo:
+            for arq in arq_filtrado:
+                arquivo.writelines(arq)

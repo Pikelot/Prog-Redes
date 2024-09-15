@@ -1,4 +1,4 @@
-import socket, time, os, sys
+import socket, time, os, sys, threading
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from funcoes_socket import *
@@ -8,6 +8,9 @@ from socket_constants import *
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Ligando o socket a porta
+
+def envio():
+    
 
 try:
     tcp_socket.settimeout(10)
@@ -27,7 +30,8 @@ Digite /help para ver os comandos disponíveis
 """)
     
     mensagem = input('Digite a mensagem: ')
-    mensagem = '/cotation <02-04-2004> <02-04-2005>'
+    #IGNORAR, SOMENTE PARA TESTES!!
+    #mensagem = '/cotation <02-04-2004> <02-04-2005>'
     
     if mensagem:
         # Convertendo a mensagem digitada de string para bytes
@@ -42,7 +46,6 @@ Digite /help para ver os comandos disponíveis
         mensagem_recebida = dado_recebido.decode(CODE_PAGE)
 
         if mensagem_recebida == 'carregando...':
-            print('oi')
             print(mensagem_recebida)
             tcp_socket.settimeout(550)
 
@@ -61,7 +64,6 @@ Digite /help para ver os comandos disponíveis
                 open(nome.decode(CODE_PAGE), 'wb').write(dado_recebido)
                 if len(dado_recebido) < BUFFER_SIZE:
                     break
-            mensagem_recebida = 'sucesso'
             #continue
 
         print(f'Echo Recebido: {mensagem_recebida}')

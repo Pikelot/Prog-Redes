@@ -19,9 +19,11 @@ while True:
     conexao, cliente = tcp_socket.accept()
     print('Conectado por: ', cliente)
     while True:
-
-        mensagem = conexao.recv(BUFFER_SIZE)
-
+        try:
+            mensagem = conexao.recv(BUFFER_SIZE)
+        except:
+            print('conexão fechada')
+            break
         if mensagem.decode(CODE_PAGE) == '/help':
             comando = ajuda()
             mensagem_retorno = 'Devolvendo...' + (comando)
@@ -52,11 +54,15 @@ while True:
             mensagem_retorno = (f"""Retornando o arquivo de cotação das datas
 De {mensagem[0]} a {mensagem[1]},
 Com nome de arquivo: {nome}""")
-            
-            #Envio da mensagem de retorno para o cliente
+
+            #Aqui eu to criando o arquivo e escrevendo o resultado da func
             with open(f'#08 - Atividade Avaliativa #04 - SOCKETS - Client-Server APP With ECHO\Servidor\{nome}', 'wb') as arquivo:
                 arquivo.write(comando.encode(CODE_PAGE))
             
+            #agora enviando mensagem de retorno > nome > arquivo
+
+            conexao.sendall(mensagem_retorno.encode(CODE_PAGE))
+            conexao.sendall(nome.encode(CODE_PAGE))
             with open(caminho, 'rb') as arquivo:
                 while True:
                     conteudo_arq = arquivo.read(4096)

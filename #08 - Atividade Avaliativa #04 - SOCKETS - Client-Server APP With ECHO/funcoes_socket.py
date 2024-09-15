@@ -12,7 +12,7 @@ def ajuda():
 | /route - para ver a rota do servidor, use o comando /route <url>
 | /vignere - para criptografar uma mensagem com o método de vignere, use o comando /vignere <mensagem> <chave>
 | /cotation - para ver a cotação do dólar, use o comando /cotation <data_inicial> <data_final> 
-|   obs: A data tem que ser no formato dd-mm-yyyy
+|   obs: A data tem que ser no formato mm-dd-yyyy
 ---------------------"""
     return mensagem
 
@@ -61,3 +61,9 @@ def cotacao(data_inicial, data_final):
         else:
             return f"Erro na requisição: {str(e)}"
 
+#inicial = '01-01-2022'
+
+#final = '12-31-2023'
+
+#teste = cotacao(inicial, final)
+#print(teste)
