@@ -66,38 +66,38 @@ def recebimento():
             if 'log' in mensagem_recebida:
 
                 nome = tcp_socket.recv(BUFFER_SIZE)
+                nome = nome.decode(CODE_PAGE)
+
                 sys.stdout.write('\r' + ' ' * 50 + '\r')
                 sys.stdout.flush()
-                print(f'##############{nome}###############')
-                input('#')
-                with open(f'{caminho}{nome.decode(CODE_PAGE)}', 'wb') as arquivo:
+                
+                tcp_socket.send('ready'.encode(CODE_PAGE))
+
+                with open(f'{caminho}{nome}', 'wb') as arquivo:
                     while dado_recebido:
                         dado_recebido = tcp_socket.recv(BUFFER_SIZE)
                         arquivo.write(dado_recebido)
                         if len(dado_recebido) < BUFFER_SIZE:
                             break
 
-                mensagem_recebida = open(f'{caminho}{nome.decode(CODE_PAGE)}', 'r')
-
                 log = True
             
 
             if log == True:
-                
-                sys.stdout.write('\r' + ' ' * 50 + '\r')
+                log = ''
+                with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Cliente/{nome}', 'r') as arquivo:
+                    for line in arquivo:
+                        log += f'{line}'
+
+                sys.stdout.write("\rResposta do servidor:\n" + log + "\nDigite a sua mensagem: ")
                 sys.stdout.flush()
-                
-                #with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Cliente/{nome}', 'r') as arquivo:
-                #    for line in arquivo.splitlines():
-                #        print(line)
                 
                 #print(f'digite a mensagem', end=' ')
                 #sys.stdout.flush()
 
             else:
-                print(f'Echo Recebido: {mensagem_recebida}')
-                #print(f'digite a mensagem', end=' ')
-                #sys.stdout.flush()
+                sys.stdout.write("\rResposta do servidor:" + mensagem_recebida + "\nDigite a sua mensagem: ")
+                sys.stdout.flush()
             #Aqui eu reimprimo o prompt do input para que ele não fique na mesma linha que o echo, não sei
             #se tem outras formas de resolver isso :/
             

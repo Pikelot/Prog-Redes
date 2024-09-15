@@ -145,19 +145,20 @@ Com nome de arquivo: {nome}""")
             conexao.send('log '.encode(CODE_PAGE))
             
             nome = f'{cliente[1]}-comandos.log'
-            #caminho = f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{cliente[1]}-comandos.log'
+            print(nome)
             
             #agora enviando nome > arquivo
-            conexao.sendall(nome.encode(CODE_PAGE))
-            
-            with open(caminho, 'rb') as arquivo:
-                while True:
-                    conteudo_arq = arquivo.read(4096)  # Lê o conteúdo do arquivo
-                    if not conteudo_arq:  # Verifica se o conteúdo foi lido
-                        break
-                    conexao.sendall(conteudo_arq)  # Envia o conteúdo lido
-                    print(f'Enviando {len(conteudo_arq)} bytes ...')
-        
+            conexao.send(nome.encode(CODE_PAGE))            
+            confirmação = conexao.recv(1024).decode(CODE_PAGE)
+            if confirmação == 'ready':
+                with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{cliente[1]}-comandos.log', 'rb') as arquivo:
+                    while True:
+                        conteudo_arq = arquivo.read(4096)  # Lê o conteúdo do arquivo
+                        if not conteudo_arq:  # Verifica se o conteúdo foi lido
+                            break
+                        conexao.sendall(conteudo_arq)  # Envia o conteúdo lido
+                        print(f'Enviando {len(conteudo_arq)} bytes ...')
+            print('cheguei')
         else:
             mensagem_retorno = 'Comando desconhecido'
             conexao.send(mensagem_retorno.encode(CODE_PAGE))
