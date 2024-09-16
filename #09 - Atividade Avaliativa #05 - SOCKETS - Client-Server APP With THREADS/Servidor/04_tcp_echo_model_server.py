@@ -1,4 +1,4 @@
-import socket, os, sys, threading, logging
+import socket, os, sys, threading, logging, time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from funcoes_socket import *
 from socket_constants import *
@@ -21,6 +21,50 @@ caminho = '09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THRE
 
 if os.path.exists(f'{caminho}cliente_list.txt'):
     os.remove(f'{caminho}cliente_list.txt')
+
+#Aqui estão todas as threads
+def Threaaads(conexao, mensagem, cliente, CODE_PAGE):
+
+    if mensagem.decode(CODE_PAGE) == '/help':
+        threading.Thread(target=process_help, args=(conexao, CODE_PAGE)).start()
+        return
+    
+    elif mensagem.decode(CODE_PAGE) == '/quit':
+        threading.Thread(target=process_quit, args=(conexao, CODE_PAGE)).start()
+        return
+    
+    elif mensagem.decode(CODE_PAGE) == '/time':
+        threading.Thread(target=process_time, args=(conexao, CODE_PAGE)).start()
+        return
+    
+    elif '/cotation' in mensagem.decode(CODE_PAGE):
+        threading.Thread(target=process_cotation, args=(conexao, mensagem, CODE_PAGE)).start()
+        return
+    
+    elif '/route' in mensagem.decode(CODE_PAGE):
+        threading.Thread(target=process_route, args=(conexao, mensagem, CODE_PAGE)).start()
+        return
+    
+    elif '/vignere' in mensagem.decode(CODE_PAGE):
+        threading.Thread(target=process_vignere, args=(conexao, mensagem, CODE_PAGE)).start()
+        return
+    
+    elif mensagem.decode(CODE_PAGE) == '/clientes':
+        threading.Thread(target=process_clientes, args=(conexao, CODE_PAGE)).start()
+        return
+    
+    elif mensagem.decode(CODE_PAGE).startswith('/log'):
+        threading.Thread(target=process_log, args=(conexao, cliente, CODE_PAGE)).start()
+        return
+
+    elif mensagem.decode(CODE_PAGE) != 'ready':
+        retorno = mensagem.decode(CODE_PAGE)
+        conexao.send(f'O comando: {retorno} não foi reconhecido pelo servidor'.encode(CODE_PAGE))
+        return
+    
+    else:
+        conexao.send(mensagem)
+        return
 
 def conexão():
  
@@ -47,123 +91,18 @@ def gerenciar(conexao, cliente):
         
         try:
             mensagem = conexao.recv(BUFFER_SIZE)
+
         except Exception as e:
             print(e)
             cliente_c([conexao, cliente, 1])
             print('cliente:', cliente, 'se desconectou!!')
             exit(1)
-
+        #criando uma função que englobe os comandos para     
         print('Comando recebido:', mensagem.decode(CODE_PAGE))
 
         logging.info(f'Comando recebido: {mensagem.decode(CODE_PAGE)}')
 
-        if mensagem.decode(CODE_PAGE) == '/help':
-            comando = ajuda()
-            mensagem_retorno = 'Devolvendo...' + (comando)
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-            continue
-
-        elif mensagem.decode(CODE_PAGE) == '/quit':
-            comando = sair()
-            mensagem_retorno = 'Devolvendo...' + str(comando)
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-        
-        elif mensagem.decode(CODE_PAGE) == '/time':
-            comando = tempo()
-            mensagem_retorno = 'Devolvendo...' + str(comando)
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-
-        elif '/cotation' in mensagem.decode(CODE_PAGE):
-            #Settando comando para pegar as datas, rodando o comando
-            mensagem = (mensagem.decode(CODE_PAGE))
-            mensagem = re.findall(r'<([^>]+)>', mensagem)
-            comando = cotacao(mensagem[0], mensagem[1])
-
-            #Settando o nome do arquivo para o cliente e criando o arquivo
-            nome = f'cotacao_dolar_{mensagem[0]}_{mensagem[1]}.json'
-            caminho = f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{nome}'
-            
-            #Settando a mensagem de retorno para o cliente
-            mensagem_retorno = (f"""Retornando o arquivo de cotação das datas
-De {mensagem[0]} a {mensagem[1]},
-Com nome de arquivo: {nome}""")
-
-            #Aqui eu to criando o arquivo e escrevendo o resultado da func
-            with open(caminho, 'wb') as arquivo:
-                arquivo.write(comando.encode(CODE_PAGE))
-            
-            #agora enviando mensagem de retorno > nome > arquivo
-
-            conexao.sendall(mensagem_retorno.encode(CODE_PAGE))
-            conexao.sendall(nome.encode(CODE_PAGE))
-            with open(caminho, 'rb') as arquivo:
-                while True:
-                    conteudo_arq = arquivo.read(4096)  # Lê o conteúdo do arquivo
-                    if not conteudo_arq:  # Verifica se o conteúdo foi lido
-                        break
-                    conexao.sendall(conteudo_arq)  # Envia o conteúdo lido
-                    print(f'Enviando {len(conteudo_arq)} bytes ...')
-
-        elif '/route' in mensagem.decode(CODE_PAGE):
-            # Enviando mensagem de carregando... esse comando demora pakas
-            conexao.send('carregando...'.encode(CODE_PAGE))
-            
-            mensagem = (mensagem.decode(CODE_PAGE))
-            mensagem = re.findall(r'<([^>]+)>', mensagem)
-
-            try:
-                comando = rota(mensagem[0])
-            except:
-                comando = 'falha na execução do comando'
-
-            mensagem_retorno = 'Devolvendo...' + str(comando)
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-
-        elif '/vignere' in mensagem.decode(CODE_PAGE):
-            mensagem = (mensagem.decode(CODE_PAGE))
-
-            mensagem = re.findall(r'<([^>]+)>', mensagem)
-
-            comando = vignere(mensagem[0], mensagem[1])
-            mensagem_retorno = 'Devolvendo...' + comando
-            
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-
-        elif mensagem.decode(CODE_PAGE) == '/clientes':
-            mensagem = (mensagem.decode(CODE_PAGE))
-
-            with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/cliente_list.txt', 'r') as arquivo:
-                mensagem_retorno = ''
-                
-                for line in arquivo:
-                    mensagem_retorno += line
-
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-
-        elif mensagem.decode(CODE_PAGE).startswith('/log'):
-
-            conexao.send('log '.encode(CODE_PAGE))
-            
-            nome = f'{cliente[1]}-comandos.log'
-            print(nome)
-            
-            #agora enviando nome > arquivo
-            conexao.send(nome.encode(CODE_PAGE))            
-            confirmação = conexao.recv(1024).decode(CODE_PAGE)
-            if confirmação == 'ready':
-                with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{cliente[1]}-comandos.log', 'rb') as arquivo:
-                    while True:
-                        conteudo_arq = arquivo.read(4096)  # Lê o conteúdo do arquivo
-                        if not conteudo_arq:  # Verifica se o conteúdo foi lido
-                            break
-                        conexao.sendall(conteudo_arq)  # Envia o conteúdo lido
-                        print(f'Enviando {len(conteudo_arq)} bytes ...')
-            print('cheguei')
-        else:
-            mensagem_retorno = 'Comando desconhecido'
-            conexao.send(mensagem_retorno.encode(CODE_PAGE))
-
-        if not mensagem: break
+        Threaaads(conexao, mensagem, cliente, CODE_PAGE)
 
     print('Finalizando Conexão do Cliente ', cliente)
     conexao.close()

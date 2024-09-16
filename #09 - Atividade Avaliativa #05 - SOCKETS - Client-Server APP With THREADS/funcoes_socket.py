@@ -1,6 +1,8 @@
 import datetime, subprocess, re
 import requests, os
-import json
+import json, time
+
+#Aqui as funções são processadas de forma simples:
 
 def ajuda():
     mensagem = """
@@ -79,3 +81,94 @@ def cliente_c(parametros):
         with open(f'{caminho}cliente_list.txt', 'w') as arquivo:
             for arq in arq_filtrado:
                 arquivo.writelines(arq)
+
+#Os comandos para mandar para o servidor
+
+def process_help(conexao, CODE_PAGE):
+    comando = ajuda()
+    mensagem_retorno = 'Devolvendo...' + (comando)
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_quit(conexao, CODE_PAGE):
+    comando = sair()
+    mensagem_retorno = 'Devolvendo...' + str(comando)
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_time(conexao, CODE_PAGE):
+    comando = tempo()
+    mensagem_retorno = 'Devolvendo...' + str(comando)
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_cotation(conexao, mensagem, CODE_PAGE):
+    mensagem = mensagem.decode(CODE_PAGE)
+    datas = re.findall(r'<([^>]+)>', mensagem)
+    comando = cotacao(datas[0], datas[1])
+
+    nome = f'cotacao_dolar_{datas[0]}_{datas[1]}.json'
+    caminho = f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{nome}'
+
+    mensagem_retorno = f"""Retornando o arquivo de cotação das datas
+De {datas[0]} a {datas[1]},
+Com nome de arquivo: {nome}"""
+
+    with open(caminho, 'wb') as arquivo:
+        arquivo.write(comando.encode(CODE_PAGE))
+
+    conexao.sendall(mensagem_retorno.encode(CODE_PAGE))
+    conexao.sendall(nome.encode(CODE_PAGE))
+    
+    with open(caminho, 'rb') as arquivo:
+        while True:
+            conteudo_arq = arquivo.read(4096)
+            if not conteudo_arq:
+                break
+            conexao.sendall(conteudo_arq)
+            print(f'Enviando {len(conteudo_arq)} bytes ...')
+
+def process_route(conexao, mensagem, CODE_PAGE):
+    conexao.send('carregando...'.encode(CODE_PAGE))
+    
+    mensagem = mensagem.decode(CODE_PAGE)
+    rota_dados = re.findall(r'<([^>]+)>', mensagem)
+
+    try:
+        comando = rota(rota_dados[0])
+    except:
+        comando = 'falha na execução do comando'
+
+    mensagem_retorno = 'Devolvendo...' + str(comando)
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_vignere(conexao, mensagem, CODE_PAGE):
+    mensagem = mensagem.decode(CODE_PAGE)
+    params = re.findall(r'<([^>]+)>', mensagem)
+    
+    comando = vignere(params[0], params[1])
+    mensagem_retorno = 'Devolvendo...' + comando
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_clientes(conexao, CODE_PAGE):
+    with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/cliente_list.txt', 'r') as arquivo:
+        mensagem_retorno = arquivo.read()
+    conexao.send(mensagem_retorno.encode(CODE_PAGE))
+
+def process_log(conexao, cliente, CODE_PAGE):
+    conexao.send('log '.encode(CODE_PAGE))
+    nome = f'{cliente[1]}-comandos.log'
+    print(nome)
+
+    conexao.send(nome.encode(CODE_PAGE))
+    #confirmação = conexao.recv(1024).decode(CODE_PAGE)
+    #print(confirmação)
+    
+    time.sleep(5)
+    
+    #if confirmação == 'ready':
+    
+    with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{cliente[1]}-comandos.log', 'rb') as arquivo:
+            while True:
+                conteudo_arq = arquivo.read(4096)
+                if not conteudo_arq:
+                    break
+                conexao.sendall(conteudo_arq)
+                print(f'Enviando {len(conteudo_arq)} bytes ...')
