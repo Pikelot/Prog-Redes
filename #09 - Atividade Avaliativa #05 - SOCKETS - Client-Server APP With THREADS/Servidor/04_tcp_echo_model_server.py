@@ -97,7 +97,7 @@ def gerenciar(conexao, cliente):
             cliente_c([conexao, cliente, 1])
             print('cliente:', cliente, 'se desconectou!!')
             exit(1)
-        #criando uma função que englobe os comandos para     
+            
         print('Comando recebido:', mensagem.decode(CODE_PAGE))
 
         logging.info(f'Comando recebido: {mensagem.decode(CODE_PAGE)}')

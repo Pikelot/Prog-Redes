@@ -61,6 +61,8 @@ def cotacao(data_inicial, data_final):
         else:
             return f"Erro na requisição: {str(e)}"
 
+print(cotacao('02-04-2004', '02-04-2008'))
+
 #inicial = '01-01-2022'
 
 #final = '12-31-2023'

@@ -4,6 +4,11 @@ import json, time
 
 #Aqui as funções são processadas de forma simples:
 
+def diretorio(nome_arquivo):
+    diretorio_atual = os.path.dirname(__file__)
+    diretorio_destino = os.path.join(diretorio_atual, nome_arquivo)
+    return diretorio_destino
+
 def ajuda():
     mensagem = """
 ---------------------
@@ -16,6 +21,7 @@ def ajuda():
 | /cotation - para ver a cotação do dólar, use o comando /cotation <data_inicial> <data_final> 
 |   obs: A data tem que ser no formato mm-dd-yyyy
 | /clientes - para mostrar os clientes atualmente conectados
+| /log - para ver os comandos enviados
 ---------------------"""
     return mensagem
 
@@ -45,24 +51,21 @@ def cotacao(data_inicial, data_final):
     try:
         requisicao = requests.get(url)
         requisicao.raise_for_status()  # Lança uma exceção para códigos de status HTTP de erro
-        
         dados = requisicao.json()
         
-        cotacoes = {}
-        for item in dados['value']:
-            data = item['dataHoraCotacao'].split()[0]
-            cotacoes[data] = {
+        cotacoes = {
+            item['dataHoraCotacao'].split()[0]: {
                 'compra': item['cotacaoCompra'],
                 'venda': item['cotacaoVenda']
-            }
+            } for item in dados['value']
+        }
         
-        return json.dumps(cotacoes)
+        return json.dumps(cotacoes)  # Retorna apenas se não houver exceção
     
-    except requests.exceptions.RequestException as e:
-        if hasattr(e, 'response'):
-            return f"Erro na requisição: {e.response.status_code} - {e.response.reason}"
-        else:
-            return f"Erro na requisição: {str(e)}"
+    except requests.exceptions.RequestException:
+        return None  # Retorna None em caso de exceção
+
+#print(cotacao('02-04-2004', '02-04-2008'))
 
 def cliente_c(parametros):
     #proc é um inteiro #0 ou #1, #0 é o processo que é enviado quando um cliente se desconectar
@@ -100,22 +103,37 @@ def process_time(conexao, CODE_PAGE):
     conexao.send(mensagem_retorno.encode(CODE_PAGE))
 
 def process_cotation(conexao, mensagem, CODE_PAGE):
-    mensagem = mensagem.decode(CODE_PAGE)
-    datas = re.findall(r'<([^>]+)>', mensagem)
-    comando = cotacao(datas[0], datas[1])
+    
+    mensagem = (mensagem.decode(CODE_PAGE))
+    mensagem = re.findall(r'<([^>]+)>', mensagem)
 
-    nome = f'cotacao_dolar_{datas[0]}_{datas[1]}.json'
+    comando2 = cotacao(mensagem[0], mensagem[1])
+    #print(data1)
+
+    data1 = str(mensagem[0])
+    data2 = str(mensagem[1])
+
+    #comando = cotacao('02-04-2004', '02-04-2008')
+    comando2 = cotacao(str(data1), str(data2))
+
+    try:
+        nome = f'cotacao_dolar_{data1}_{data2}.json'
+    except Exception as e:
+        print(e)
+        
     caminho = f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Servidor/{nome}'
 
     mensagem_retorno = f"""Retornando o arquivo de cotação das datas
-De {datas[0]} a {datas[1]},
+De {data1} a {data2},
 Com nome de arquivo: {nome}"""
 
     with open(caminho, 'wb') as arquivo:
-        arquivo.write(comando.encode(CODE_PAGE))
+        arquivo.write(comando2.encode(CODE_PAGE))
 
     conexao.sendall(mensagem_retorno.encode(CODE_PAGE))
+    time.sleep(5)
     conexao.sendall(nome.encode(CODE_PAGE))
+    time.sleep(5)
     
     with open(caminho, 'rb') as arquivo:
         while True:
@@ -153,7 +171,7 @@ def process_clientes(conexao, CODE_PAGE):
     conexao.send(mensagem_retorno.encode(CODE_PAGE))
 
 def process_log(conexao, cliente, CODE_PAGE):
-    conexao.send('log '.encode(CODE_PAGE))
+    conexao.send('logging '.encode(CODE_PAGE))
     nome = f'{cliente[1]}-comandos.log'
     print(nome)
 
