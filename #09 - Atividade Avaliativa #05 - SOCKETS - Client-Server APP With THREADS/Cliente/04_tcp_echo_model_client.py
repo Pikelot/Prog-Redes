@@ -20,7 +20,7 @@ def envio():
 
         mensagem = input("Digite a mensagem: ")
         #IGNORAR, SOMENTE PARA TESTES!!
-        mensagem = '/cotation <02-04-2004> <02-04-2008>'
+        #mensagem = '/cotation <02-04-2004> <02-04-2008>'
     
         if mensagem:
             # Convertendo a mensagem digitada de string para bytes
@@ -74,7 +74,7 @@ def recebimento():
             
             tcp_socket.send('ready'.encode(CODE_PAGE))
 
-            with open(f'09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Cliente/{nome}', 'wb') as arquivo:
+            with open(f'#09 - Atividade Avaliativa #05 - SOCKETS - Client-Server APP With THREADS/Cliente/{nome}', 'wb') as arquivo:
                 while dado_recebido:
                     dado_recebido = tcp_socket.recv(BUFFER_SIZE)
                     arquivo.write(dado_recebido)
